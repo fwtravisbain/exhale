@@ -8,10 +8,8 @@ class Stopwatch extends Component
         timerOn: false,
         timerStart: 0,
         timerTime: 0,
-        circleOut: false,
-        circleInterval: 3000,
-        circleScale:1,
         animationPaused: "paused",
+        animation: "none",
     };
 
     startTimer = ()=> 
@@ -22,44 +20,18 @@ class Stopwatch extends Component
                 timerTime: this.state.timerTime,
                 timerStart: Date.now() - this.state.timerTime,
                 animationPaused: "running",
+                animation: "animateBreath 3s ease-in-out infinite alternate",
             }
         );
 
         this.timer = setInterval(() => 
         {
-            this.animateCircle();
-
             this.setState(
             {
                 timerTime: Date.now() - this.state.timerStart,
                 circleInterval: this.state.circleInterval + 10,
             });
         }, 10);
-    }
-
-    animateCircle = () =>
-    {
-        if(this.state.circleInterval > 3000)
-        {
-            if(!this.state.circleOut)
-            this.setState(
-                {
-                    circleOut: true,
-                    circleInterval: 0,
-                    circleScale: 15
-                }
-            )
-            else
-            {
-                this.setState(
-                {
-                    circleOut: false,
-                    circleInterval: 0,
-                    circleScale: 1,
-                }
-                )
-            }
-        }   
     }
 
     stopTimer = () => 
@@ -79,6 +51,7 @@ class Stopwatch extends Component
             timerStart: 0,
             timerTime: 0,
             circleOut:0,
+            animation: "none",
         });
     }
 
@@ -98,8 +71,8 @@ class Stopwatch extends Component
                         <div className="circle"
                             style = {
                             {
-                                transform: `scale(${this.state.circleScale}, ${this.state.circleScale})`,
                                 animationPlayState: `${this.state.animationPaused}`,
+                                animation: `${this.state.animation}`,
                             }
                         }>
                         </div>
